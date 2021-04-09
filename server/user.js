@@ -1,8 +1,10 @@
-// import { Router } from 'express';
 const db = require("./database");
 
-// const router = Router();
+// const userData = db.user_info.findMany({
+//   where: {
+//     user_yn: "Y",
+//   },
+// });
 
-const userData = db.user_info.findMany({});
-
-export default userData;
+// module.exports = userData;
+console.log(db);
