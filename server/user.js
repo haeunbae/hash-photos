@@ -1,10 +1,12 @@
 const db = require("./database");
 
-// const userData = db.user_info.findMany({
-//   where: {
-//     user_yn: "Y",
-//   },
-// });
+const userData = await db.user_info.findMany({
+  where: {
+    user_yn: "Y",
+  },
+});
 
-// module.exports = userData;
-console.log(db);
+console.log(userData);
+
+module.exports = userData;
+// console.log(db);

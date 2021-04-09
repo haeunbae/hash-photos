@@ -1,7 +1,13 @@
-// import { PrismaClient } from "@prisma/client";
-const PrismaClient = require("@prisma/client");
+// const { PrismaClient } = require("@prisma/client");
 
-const prisma = new PrismaClient({});
-// console.log(PrismaClient.);
+// const prisma = new PrismaClient({});
+
+// module.exports = prisma;
+
+const prismaModule = require("@prisma/client");
+
+const PrismaClient = prismaModule.PrismaClient;
+
+const prisma = new PrismaClient();
 
 module.exports = prisma;

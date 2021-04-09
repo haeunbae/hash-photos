@@ -1,14 +1,14 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const users = require("./user");
+const db = require("./database");
 
 module.exports = () => {
   passport.serializeUser((user, done) => {
     // Strategy 성공 시 세션에 user정보 저장
     done(null, user); // 여기의 user가 deserializeUser의 첫 번째 매개변수로 이동
   });
-
   passport.deserializeUser((user, done) => {
+    //서버 요청 들어올때마다 세션에 저장된(serializeUser) 정보와 db정보를 비교
     // 매개변수 user는 serializeUser의 done의 인자 user를 받은 것
     done(null, user); // 여기의 user가 req.user가 됨
   });
@@ -21,19 +21,33 @@ module.exports = () => {
         session: true, // 세션에 저장 여부
         passReqToCallback: false,
       },
-      (id, password, done) => {
-        console.log(id, password);
-        users.findOne({ user_id: id }, (findError, user) => {
-          if (findError) return done(findError); // 서버 에러 처리
-          if (!user)
-            return done(null, false, { message: "존재하지 않는 아이디입니다" }); // 임의 에러 처리
-          // return user.comparePassword(password, (passError, isMatch) => {
-          //   if (isMatch) {
-          return done(null, user); // 검증 성공
-          //   }
-          //   return done(null, false, { message: '비밀번호가 틀렸습니다' }); // 임의 에러 처리
-          // });
+      async (id, pw, done) => {
+        console.log(id, pw);
+        // if (id === "" || pw === "") {
+        //   return done(null, false, {
+        //     message: "잘못된 아이디 또는 패스워드 입니다.",
+        //   });
+        // }
+
+        const userData = await db.user_info.findFirst({
+          where: {
+            use_yn: "Y",
+            user_id: id,
+          },
         });
+
+        if (!userData)
+          return done(null, false, {
+            message: "사용자 정보를 찾을수 없습니다.",
+          });
+        if (pw !== userData.user_pw)
+          return done(null, false, {
+            message: "사용자 패스워드 에러입니다.",
+          });
+
+        return done(null, userData, {
+          message: "로그인 성공",
+        }); // 검증 성공
       }
     )
   );
