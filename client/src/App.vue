@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">HashPhotos</router-link> |
-      <router-link to="/signUp">signUp</router-link>
+      <router-link to="/login">Login</router-link> |
+      <router-link to="/signUp">SignUp</router-link>
     </div>
     <router-view />
     <footer>Copyright@ haeun bae</footer>

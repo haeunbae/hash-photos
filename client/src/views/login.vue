@@ -2,26 +2,39 @@
   <body class="backArea">
     <div>
       <section class="mainArea">
-        <h2 style="padding-top: 30px">Welcome to HashPhotos</h2>
-        <h2 class="signUpText">친구들의 사진을 보려면 가입하세요.</h2>
+        <h2 style="padding-top: 30px">Login to HashPhotos</h2>
+        <h2 class="signUpText">친구들의 사진을 HashTag하세요.</h2>
         <div class="inputArea">
           <label class="inputLabel"
-            ><input class="inputField" type="text" label="사용할 아이디" />
+            ><input
+              v-model="userId"
+              class="inputField"
+              type="text"
+              placeholder="사용자 ID"
+              maxlength="75"
+              name="userid"
+              value=""
+            />
           </label>
           <label class="inputLabel"
-            ><input class="inputField" type="text" />
-          </label>
-          <label class="inputLabel"
-            ><input class="inputField" type="text" />
+            ><input
+              v-model="userPw"
+              class="inputField"
+              type="password"
+              placeholder="사용자 PASSWORD"
+              maxlength="75"
+              name="userpw"
+              value=""
+            />
           </label>
           <div class="btnArea">
-            <button class="signUp" disabled>가입</button>
+            <button class="signUp" @click="tryLogin">로그인</button>
           </div>
         </div>
         <div class="divider"></div>
 
         <p class="loginArea">
-          계정이 있으신가요? <a href="/login" tabindex="0">로그인</a>
+          계정이 없으신가요? <a href="/signUp" tabindex="0">가입하기</a>
         </p>
       </section>
     </div>
@@ -30,10 +43,33 @@
 
 <script>
 export default {
+  name: "Home",
+  components: {},
   data() {
     return {
-      test: "commit test",
+      userId: "",
+      userPw: "",
     };
+  },
+  methods: {
+    tryLogin() {
+      // const userId = document.getElementById('userId').value;
+      // const userPw = document.getElementById('userPw').value;
+
+      console.log(this.userId, this.userPw);
+
+      axios
+        .post("/login", {
+          id: this.userId,
+          pw: this.userPw,
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
   },
 };
 </script>
@@ -53,16 +89,12 @@ export default {
   align-items: center;
 }
 .mainArea {
-  /* width: 500px; */
   min-width: 350px;
   height: 500px;
   border: 1px solid rgba(var(--b6a, 219, 219, 219), 1);
-  /* justify-content: center; */
 }
 .inputArea {
-  /* line-height: 200px; */
   margin: auto;
-  /* vertical-align: middle; */
   align-items: center;
   justify-content: center;
   display: flex;
