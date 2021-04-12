@@ -32,7 +32,7 @@
 export default {
   data() {
     return {
-      test: "alodololololol",
+      test: "commit test",
     };
   },
 };
