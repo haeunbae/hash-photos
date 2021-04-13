@@ -10,6 +10,7 @@ datasource db {
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model user_info {
   user_id String  @id
+  user_nm String?  
   use_yn  String? @default("Y")
   user_pw String? @db.VarChar(100)
   img_info img_info[]

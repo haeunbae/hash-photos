@@ -5,7 +5,8 @@ import store from "./store";
 import axios from "axios"; // import axios
 
 const instance = axios.create({
-  baseURL: "localhost:3004/",
+  baseURL: "http://localhost:3004/",
+  withCredentials: true,
 });
 
 Vue.config.productionTip = false;

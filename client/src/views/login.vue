@@ -53,18 +53,20 @@ export default {
   },
   methods: {
     tryLogin() {
-      // const userId = document.getElementById('userId').value;
-      // const userPw = document.getElementById('userPw').value;
+      // console.log(this.userId, this.userPw);
 
-      console.log(this.userId, this.userPw);
-
-      axios
+      this.$axios
         .post("/login", {
           id: this.userId,
           pw: this.userPw,
         })
-        .then(function (response) {
-          console.log(response);
+        .then((res) => {
+          if (res.status === 200) {
+            alert("로그인되었습니다.");
+            this.$router.push("/home");
+          } else {
+            console.log(res);
+          }
         })
         .catch(function (error) {
           console.log(error);

@@ -5,10 +5,39 @@ const passportConfig = require("./passport");
 const router = require("./router");
 const morgan = require("morgan");
 const FileStore = require("session-file-store");
+const cors = require("cors");
 
 const store = FileStore(session);
 
 const app = express();
+
+//고정된 주소로만 교차 출처 리소스 사용
+// const corsOptions = {
+//   origin: "http://localhost:8080",
+//   credential: true,
+// };
+
+//동적인 주소 사용
+const corsOptions = {
+  origin(origin, callback) {
+    callback(null, true);
+  },
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", req.headers.origin);
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization, Pragma"
+  );
+  res.header("Cache-Control", "no-cache");
+  res.header("Pragma", "no-cache");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.header("Access-Control-Allow-Credentials", true);
+  next();
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

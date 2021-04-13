@@ -6,16 +6,34 @@
         <h2 class="signUpText">친구들의 사진을 보려면 가입하세요.</h2>
         <div class="inputArea">
           <label class="inputLabel"
-            ><input class="inputField" type="text" label="사용할 아이디" />
+            ><input
+              class="inputField"
+              type="text"
+              v-model="userNm"
+              placeholder="사용자 이름"
+              maxlength="75"
+            />
           </label>
           <label class="inputLabel"
-            ><input class="inputField" type="text" />
+            ><input
+              class="inputField"
+              type="text"
+              v-model="userId"
+              placeholder="사용자 ID"
+              maxlength="75"
+            />
           </label>
           <label class="inputLabel"
-            ><input class="inputField" type="text" />
+            ><input
+              class="inputField"
+              type="password"
+              v-model="userPw"
+              placeholder="사용자 PASSWORD"
+              maxlength="75"
+            />
           </label>
           <div class="btnArea">
-            <button class="signUp" disabled>가입</button>
+            <button class="signUp" @click="singUp">가입</button>
           </div>
         </div>
         <div class="divider"></div>
@@ -32,8 +50,33 @@
 export default {
   data() {
     return {
-      test: "commit test",
+      userNm: "",
+      userId: "",
+      userPw: "",
     };
+  },
+  methods: {
+    singUp() {
+      // console.log(this.userNm, this.userId, this.userPw);
+
+      const params = {
+        name: this.userNm,
+        id: this.userId,
+        pw: this.userPw,
+      };
+
+      this.$axios
+        .post("/signup", params)
+        .then((res) => {
+          if (res.status === 200) {
+            alert("회원가입 되었습니다.");
+            this.$router.push("/login");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 };
 </script>
