@@ -4,8 +4,6 @@ const passport = require("passport");
 
 const router = Router();
 
-console.log("login js");
-
 router.post("/login", (req, res, next) => {
   //localStrategy 실행
   passport.authenticate("local", (authError, user, info) => {

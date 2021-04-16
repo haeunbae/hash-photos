@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import axios from "axios"; // import axios
+import "./assets/reset.css";
 
 const instance = axios.create({
   baseURL: "http://localhost:3004/",

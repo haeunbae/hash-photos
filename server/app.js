@@ -7,6 +7,10 @@ const morgan = require("morgan");
 const FileStore = require("session-file-store");
 const cors = require("cors");
 
+// app.post('/up', upload.single('img'), (req, res) => {
+//   console.log(req.file);
+// });
+
 const store = FileStore(session);
 
 const app = express();
@@ -25,6 +29,7 @@ const corsOptions = {
   credentials: true,
 };
 
+// app.use(upload);
 app.use(cors(corsOptions));
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", req.headers.origin);

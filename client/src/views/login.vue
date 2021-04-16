@@ -1,6 +1,7 @@
 <template>
   <body class="backArea">
     <div>
+      <Header />
       <section class="mainArea">
         <h2 style="padding-top: 30px">Login to HashPhotos</h2>
         <h2 class="signUpText">친구들의 사진을 HashTag하세요.</h2>
@@ -42,9 +43,10 @@
 </template>
 
 <script>
+import header from "./loginHeader";
 export default {
-  name: "Home",
-  components: {},
+  name: "login",
+  components: { Header: header },
   data() {
     return {
       userId: "",

@@ -2,10 +2,16 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import login from "../views/login.vue";
 import signUp from "../views/signUp.vue";
+import home from "../views/home.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: "*",
+    name: "login",
+    redirect: "/login",
+  },
   {
     path: "/login",
     name: "login",
@@ -15,6 +21,11 @@ const routes = [
     path: "/signUp",
     name: "signUp",
     component: signUp,
+  },
+  {
+    path: "/home",
+    name: "home",
+    component: home,
   },
 ];
 

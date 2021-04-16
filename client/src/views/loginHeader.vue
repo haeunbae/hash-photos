@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
-    <router-view />
-    <footer>Copyright@ haeun bae</footer>
+  <div id="nav">
+    <router-link to="/login">Login</router-link> |
+    <router-link to="/signUp">SignUp</router-link>
   </div>
 </template>
 

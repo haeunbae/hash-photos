@@ -1,6 +1,7 @@
 <template>
   <body class="backArea">
     <div>
+      <Header />
       <section class="mainArea">
         <h2 style="padding-top: 30px">Welcome to HashPhotos</h2>
         <h2 class="signUpText">친구들의 사진을 보려면 가입하세요.</h2>
@@ -47,7 +48,9 @@
 </template>
 
 <script>
+import header from "./loginHeader";
 export default {
+  components: { Header: header },
   data() {
     return {
       userNm: "",
@@ -96,16 +99,12 @@ export default {
   align-items: center;
 }
 .mainArea {
-  /* width: 500px; */
   min-width: 350px;
   height: 500px;
   border: 1px solid rgba(var(--b6a, 219, 219, 219), 1);
-  /* justify-content: center; */
 }
 .inputArea {
-  /* line-height: 200px; */
   margin: auto;
-  /* vertical-align: middle; */
   align-items: center;
   justify-content: center;
   display: flex;
