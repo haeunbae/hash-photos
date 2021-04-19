@@ -4,8 +4,10 @@
     <div class="modal-card">
       <!-- <slot /> -->
       <div class="modal-header">
-        <span class="close" @click="close">&times;</span>
-        <!-- <h2>Modal Header</h2> -->
+
+        <h3>upload your image</h3>
+        <span @click="close"><font-awesome-icon icon="times" class="fas times fa-2x"/></span>
+        
       </div>
       <vue-dropzone
         ref="imgDropZone"
@@ -13,6 +15,13 @@
         :options="dropzoneOptions"
         @vdropzone-complete="afterComplete"
       ></vue-dropzone>
+
+        <p class="info">Type your hashtag and click enter.</p>
+      <div class="wrapper">
+  <input type="text" id="hashtags" autocomplete="off">
+  <div class="tag-container">
+  </div>
+</div>
     </div>
   </div>
 </template>
@@ -34,8 +43,8 @@ export default {
     return {
       dropzoneOptions: {
         url: "https://httpbin.org/post",
-        thumbnailWidth: 150,
-        thumbnailHeight: 150,
+        thumbnailWidth: 300,
+        thumbnailHeight: 300,
         addRemoveLinks: false,
         acceptedFiles: ".jpg, .jpeg, .png",
         dictDefaultMessage: `<p class='text-default'><i class='fa fa-cloud-upload mr-2'></i> Drag Images or Click Here</p>
@@ -58,6 +67,7 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:300,400');
 /* Modal */
 .modal,
 .overlay {
@@ -73,26 +83,18 @@ export default {
 }
 .modal-card {
   position: relative;
-  max-width: 80%;
+    max-width: 80%;
+    /* left: 25%; */
+    top: 20%;
   margin: auto;
-  margin-top: 30px;
-  /* padding: 20px; */
+  width:50%;
   background-color: white;
   min-height: 500px;
   z-index: 10;
   opacity: 1;
   animation-name: animatetop;
-  animation-duration: 0.4s;
-  /*
-  position: relative;
-  background-color: #fefefe;
-  margin: auto;
-  padding: 0;
-  border: 1px solid #888;
-  width: 80%;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-  animation-name: animatetop;
-  animation-duration: 0.4s */
+  animation-duration: 0.8s;
+ 
 }
 .modal-header {
   padding: 2px 16px;
@@ -101,19 +103,98 @@ export default {
   display: flex;
   flex-direction: row;
   height: 50px;
+  justify-content: space-between;;
+  align-items: center;
 }
 
 .close {
   margin-left: auto;
 }
 
+h3 {
+  color: white
+}
+/* 
+.dropzone {
+    min-height: 300px;
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    background: white;
+    padding: 20px 20px;
+} */
+
+
+.wrapper {
+      padding: 0;
+    margin: 0;
+    /* width: 580px; */
+    background-color: darkseagreen;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    flex-flow: row wrap;
+    border: solid 0px white;
+}
+
+/* h3 {
+  margin: 10px 14px 10px 0;
+  font-weight: 300;
+  font-size: 36px;
+} */
+
+p {
+  margin: 10px 10px;
+  font-weight: 300;
+  font-size: 14px;
+  opacity: 0.8;
+  letter-spacing: 1px;
+}
+
+input {
+  border: none;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin: 8px;
+  width: 100%;
+  color: #666;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 16px;
+  outline: none;
+}
+
+.tag-container {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.tag{
+  pointer-events: none;
+  background-color: #242424;
+  color: white;
+  padding: 6px;
+  margin: 5px;
+}
+
+.tag::before {
+  pointer-events: all;
+  display: inline-block;
+  content: 'x';  
+  height: 20px;
+  width: 20px;
+  margin-right: 6px;
+  text-align: center;
+  color: #ccc;
+  background-color: #111;
+  cursor: pointer;
+}
+
+
 @keyframes animatetop {
   from {
-    top: -300px;
+    top: 0;
     opacity: 0;
   }
   to {
-    top: 0;
+    top: 20%;
     opacity: 1;
   }
 }
