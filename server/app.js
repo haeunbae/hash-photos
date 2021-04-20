@@ -69,6 +69,9 @@ app.use(
 
 app.use("/images", express.static("images"));
 
+app.use(express.json({ limit: "mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: false }));
+
 app.use("", router);
 
 app.listen(3004, () => {

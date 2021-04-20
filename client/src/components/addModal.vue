@@ -2,26 +2,38 @@
   <div class="modal" v-if="showModal">
     <div class="overlay"></div>
     <div class="modal-card">
-      <!-- <slot /> -->
+      <!-- modal header-->
       <div class="modal-header">
-
         <h3>upload your image</h3>
-        <span @click="close"><font-awesome-icon icon="times" class="fas times fa-2x"/></span>
-        
+        <span @click="close"
+          ><font-awesome-icon icon="times" class="fas times fa-2x"
+        /></span>
       </div>
-      <vue-dropzone
-        ref="imgDropZone"
-        id="customdropzone"
-        :options="dropzoneOptions"
-        @vdropzone-complete="afterComplete"
-      ></vue-dropzone>
+      <!--modal content-->
+      <div class="card-wrapper">
+        <vue-dropzone
+          v-model="image"
+          ref="imgDropZone"
+          id="customdropzone"
+          :options="dropzoneOptions"
+          @vdropzone-file-added="vfileAdded"
+        ></vue-dropzone>
 
-        <p class="info">Type your hashtag and click enter.</p>
-      <div class="wrapper">
-  <input type="text" id="hashtags" autocomplete="off">
-  <div class="tag-container">
-  </div>
-</div>
+        <p class="info">Type your hashtag(ex. #HashTag")</p>
+        <div class="wrapper">
+          <input
+            type="text"
+            id="hashtags"
+            autocomplete="off"
+            v-model="hashtag"
+            v-on:keyup.enter="submit"
+          />
+
+          <div class="tag-container"></div>
+        </div>
+
+        <button class="save-btn" @click="save"><h3>save it!</h3></button>
+      </div>
     </div>
   </div>
 </template>
@@ -29,6 +41,7 @@
 <script>
 import vue2Dropzone from "vue2-dropzone";
 import "vue2-dropzone/dist/vue2Dropzone.min.css";
+import axios from "axios";
 export default {
   components: {
     vueDropzone: vue2Dropzone,
@@ -42,17 +55,28 @@ export default {
   data() {
     return {
       dropzoneOptions: {
-        url: "https://httpbin.org/post",
-        thumbnailWidth: 300,
-        thumbnailHeight: 300,
-        addRemoveLinks: false,
+        url: "https://locaslhost:3004/image",
+        thumbnailWidth: 200,
+        thumbnailHeight: 200,
         acceptedFiles: ".jpg, .jpeg, .png",
         dictDefaultMessage: `<p class='text-default'><i class='fa fa-cloud-upload mr-2'></i> Drag Images or Click Here</p>
           <p class="form-text">Allowed Files: .jpg, .jpeg, .png</p>
           `,
+        maxFiles: 1,
       },
       images: [],
+      hashtag: "",
+      image: "",
+      imgInfo: {
+        imgFile: null,
+        hashtag: "",
+      },
     };
+  },
+  watch: {
+    hashtag() {
+      this.submit();
+    },
   },
   methods: {
     open() {
@@ -62,12 +86,59 @@ export default {
     close() {
       this.showModal = false;
     },
+    submit() {
+      // const tag = '#해시 #태그 #앵 ㅇㄹㅇㄹ';
+      this.imgInfo.hashtag = this.hashtag
+        .split(/(#[^\s#]+)/g)
+        .filter((value) => {
+          if (value.match(/(#[^\s#]+)/)) {
+            return value;
+          }
+        })
+        .join("");
+
+      console.log(this.imgInfo.hashtag);
+    },
+    save() {
+      console.log(this.imgInfo);
+      console.log(typeof this.imgInfo.imgFile);
+
+      var formData = new FormData();
+
+      formData.append("hashtag", this.imgInfo.hashtag);
+      formData.append("img", this.imgInfo.imgFile, this.imgInfo.imgFile.name);
+
+      // axios.defaults.headers.post["Content-Type"] =
+      //   "application/x-www-form-urlencoded";
+      axios
+        .post("/image", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then((res) => {
+          console.log(res);
+          this.imgInfo = {};
+          this.hashtag = "";
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    vfileAdded(file) {
+      console.log(file);
+      this.imgInfo.imgFile = file;
+    },
+    vfiledroped(e) {
+      console.log(e);
+    },
+    clickremove(file) {
+      console.log(file);
+    },
   },
 };
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css?family=Work+Sans:300,400');
+@import url("https://fonts.googleapis.com/css?family=Work+Sans:300,400");
 /* Modal */
 .modal,
 .overlay {
@@ -83,18 +154,17 @@ export default {
 }
 .modal-card {
   position: relative;
-    max-width: 80%;
-    /* left: 25%; */
-    top: 20%;
+  max-width: 80%;
+  /* left: 25%; */
+  top: 20%;
   margin: auto;
-  width:50%;
+  width: 50%;
   background-color: white;
   min-height: 500px;
   z-index: 10;
   opacity: 1;
   animation-name: animatetop;
   animation-duration: 0.8s;
- 
 }
 .modal-header {
   padding: 2px 16px;
@@ -103,7 +173,7 @@ export default {
   display: flex;
   flex-direction: row;
   height: 50px;
-  justify-content: space-between;;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -112,27 +182,34 @@ export default {
 }
 
 h3 {
-  color: white
+  color: white;
 }
-/* 
-.dropzone {
-    min-height: 300px;
-    border: 2px solid rgba(0, 0, 0, 0.3);
-    background: white;
-    padding: 20px 20px;
-} */
 
+.card-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.dropzone {
+  min-height: 300px;
+  background: white;
+  padding: 20px 20px;
+  flex-grow: 2;
+}
+
+.vue-dropzone > .dz-preview .dz-details {
+  background-color: rgba(33, 150, 243, 0);
+}
 
 .wrapper {
-      padding: 0;
-    margin: 0;
-    /* width: 580px; */
-    background-color: darkseagreen;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    flex-flow: row wrap;
-    border: solid 0px white;
+  padding: 0;
+  margin: 0;
+  /* width: 580px; */
+  background-color: darkseagreen;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  flex-flow: row wrap;
+  border: solid 0px white;
 }
 
 /* h3 {
@@ -156,7 +233,7 @@ input {
   margin: 8px;
   width: 100%;
   color: #666;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
   font-size: 16px;
   outline: none;
 }
@@ -166,7 +243,7 @@ input {
   flex-flow: row wrap;
 }
 
-.tag{
+.tag {
   pointer-events: none;
   background-color: #242424;
   color: white;
@@ -177,7 +254,7 @@ input {
 .tag::before {
   pointer-events: all;
   display: inline-block;
-  content: 'x';  
+  content: "x";
   height: 20px;
   width: 20px;
   margin-right: 6px;
@@ -187,6 +264,11 @@ input {
   cursor: pointer;
 }
 
+.save-btn {
+  background: lightgrey;
+  border: none;
+  margin-top: 10px;
+}
 
 @keyframes animatetop {
   from {
