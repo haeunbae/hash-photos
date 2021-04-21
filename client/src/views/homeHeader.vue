@@ -1,37 +1,38 @@
 <template>
-  <fixed-header>
-    <div class="navbar">
-      <div class="header-row">
-        <h2>Hash Photos</h2>
-        <input
-          class="search"
-          type="text"
-          v-model="search"
-          placeholder="검색"
-          maxlength="75"
-        />
-        <span> test button</span>
-      </div>
+  <!-- <fixed-header> -->
+  <div class="navbar">
+    <div class="header-row">
+      <h2>Hash Photos</h2>
+      <input
+        class="search"
+        type="text"
+        v-model="search"
+        placeholder="검색"
+        maxlength="75"
+      />
+      <span> test button</span>
     </div>
-  </fixed-header>
+  </div>
+  <!-- </fixed-header> -->
 </template>
 
 <script>
-import FixedHeader from "vue-fixed-header";
+// import FixedHeader from "vue-fixed-header";
 
 export default {
   components: {
-    FixedHeader,
+    // FixedHeader,
   },
 };
 </script>
 
 <style>
-.navbar.vue-fixed-header--isFixed {
-  position: fixed;
+.navbar {
+  position: sticky;
   left: 0;
   top: 0;
   width: 100vw;
+  background-color: white;
 }
 
 .header-row {

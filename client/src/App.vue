@@ -1,10 +1,17 @@
 <template>
   <div id="app">
+    <Header />
     <router-view />
     <footer>Copyright@ haeun bae</footer>
   </div>
 </template>
 
+<script>
+import header from "./views/homeHeader";
+export default {
+  components: { Header: header },
+};
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

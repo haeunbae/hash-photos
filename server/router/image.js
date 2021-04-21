@@ -35,4 +35,34 @@ router.post("/image", upload.single("img"), async (req, res, next) => {
   }
 });
 
+router.get("/image", async (req, res, next) => {
+  try {
+    let getImgs = await db.img_info.findMany();
+    let idx = 0;
+    let temp = [];
+    getImgs = getImgs.reduce((acc, cur, i) => {
+      // console.log(acc);
+      // console.log(cur);
+      // console.log("temp:::", temp);
+
+      if (temp.length < 3) {
+        temp.push(cur);
+        // console.log(i % 3);
+        if (i % 3 == 2) {
+          temp.push(cur);
+          acc[idx].push(temp);
+          idx++;
+          temp = [];
+        }
+      }
+      return acc;
+    }, []);
+    console.log(getImgs);
+
+    // res.json(getImgs);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = router;
