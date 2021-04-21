@@ -20,6 +20,6 @@ model img_info {
   img_path  String @unique
   img_tag   String
   user_info  user_info @relation(fields: [user_id], references: [user_id])
-  user_id String   @unique
+  user_id String   
 
 }

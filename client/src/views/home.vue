@@ -1,7 +1,8 @@
 <template>
   <div>
     <Header />
-    <main class="grid-container"></main>
+    <div class="image-container"></div>
+
     <button @click="open">test</button>
     <modal ref="modal"></modal>
   </div>
@@ -31,8 +32,16 @@ export default {
 
 <style>
 .grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  grid-gap: 1em;
+  display: flex;
+  /* grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 1em; */
+  /* flex
+  width: 100%;
+  height: 100%; */
+}
+.image-container {
+  width: 1000px;
+  height: 500px;
+  background-color: lightgray;
 }
 </style>

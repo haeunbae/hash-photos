@@ -41,7 +41,7 @@
 <script>
 import vue2Dropzone from "vue2-dropzone";
 import "vue2-dropzone/dist/vue2Dropzone.min.css";
-import axios from "axios";
+// import axios from "axios";
 export default {
   components: {
     vueDropzone: vue2Dropzone,
@@ -110,7 +110,7 @@ export default {
 
       // axios.defaults.headers.post["Content-Type"] =
       //   "application/x-www-form-urlencoded";
-      axios
+      this.$axios
         .post("/image", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         })
@@ -118,6 +118,10 @@ export default {
           console.log(res);
           this.imgInfo = {};
           this.hashtag = "";
+          if (res.status === 200) {
+            alert("저장되었습니다.");
+            this.close();
+          }
         })
         .catch(function (error) {
           console.log(error);
