@@ -1,11 +1,20 @@
 <template>
   <div class="main">
     <div class="image-container">
-      <div class="img-row">
-        <div class="img-box" v-for="img in images" :key="img.img_path">
+      <div class="img-row" v-for="(rowImgs, i) in images" :key="i">
+        <!-- <div class="img-box" v-for="img in images" :key="img.img_path">
           <img :src="`http://localhost:3004/${img.img_path}`" />
-          <!-- <img src="../assets/logo.png" /> -->
+        </div> -->
+        <div class="img-box" v-for="img in rowImgs" :key="img.img_path">
+          <img :src="`http://localhost:3004/${img.img_path}`" />
         </div>
+        <!-- <div class="img-box">
+          <img :src="`http://localhost:3004/${img[1].img_path}`" />
+        </div>
+        <div class="img-box">
+          <img :src="`http://localhost:3004/${img[2].img_path}`" />
+        </div> -->
+        <!-- {{ img[0].img_path }} -->
       </div>
     </div>
 
@@ -64,25 +73,24 @@ export default {
   padding: 20px;
   background-color: rgba(var(--b3f, 250, 250, 250), 1);
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   justify-content: flex-start;
   align-content: flex-start;
 }
 .img-row {
-  /* max-width: 819px; */
-  /* width: 100%; */
+  width: 100%;
+  max-height: 320px;
+  display: flex;
+  flex-direction: row;
+  border: solid 1px grey;
 }
 
 .img-box {
-  max-width: 273px;
-  max-height: 273px;
   width: 33%;
-  /* height: 300px; */
   background-color: white;
   padding: 0;
   margin: 10px;
-  /* display: inline; */
 }
 img {
   display: inline;
