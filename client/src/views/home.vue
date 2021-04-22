@@ -2,19 +2,9 @@
   <div class="main">
     <div class="image-container">
       <div class="img-row" v-for="(rowImgs, i) in images" :key="i">
-        <!-- <div class="img-box" v-for="img in images" :key="img.img_path">
-          <img :src="`http://localhost:3004/${img.img_path}`" />
-        </div> -->
         <div class="img-box" v-for="img in rowImgs" :key="img.img_path">
           <img :src="`http://localhost:3004/${img.img_path}`" />
         </div>
-        <!-- <div class="img-box">
-          <img :src="`http://localhost:3004/${img[1].img_path}`" />
-        </div>
-        <div class="img-box">
-          <img :src="`http://localhost:3004/${img[2].img_path}`" />
-        </div> -->
-        <!-- {{ img[0].img_path }} -->
       </div>
     </div>
 
@@ -66,8 +56,8 @@ export default {
 }
 .image-container {
   margin: auto;
-  max-width: 80vw;
-  min-height: calc(100vh - 54px);
+  max-width: 1200px;
+  /* min-height: calc(100vh - 54px); */
   /* max-width: 800px;
   height: 100%; */
   padding: 20px;
@@ -82,20 +72,25 @@ export default {
   width: 100%;
   max-height: 320px;
   display: flex;
-  flex-direction: row;
-  border: solid 1px grey;
+  /* border: solid 1px grey; */
 }
 
 .img-box {
   width: 33%;
   background-color: white;
   padding: 0;
-  margin: 10px;
+  /* margin: 10px; */
+  margin: 0 auto;
+  padding-bottom: 30%;
+  position: relative;
 }
 img {
   display: inline;
   width: 100%;
   height: 100%;
   object-fit: contain;
+  position: absolute;
+  /* top: 0; */
+  left: 0;
 }
 </style>
