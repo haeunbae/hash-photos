@@ -1,18 +1,18 @@
 const { Router } = require("express");
 const db = require("../database");
 const multer = require("multer");
+const uuid = require("uuid");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "images/");
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname);
+    cb(null, uuid.v1() + file.originalname);
   },
 });
 
 let upload = multer({ storage: storage });
-// const upload = multer({ dest: "images/" });
 
 const router = Router();
 

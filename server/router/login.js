@@ -27,6 +27,14 @@ router.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
+router.get("/session", (req, res, next) => {
+  console.log("req usere::::", req.user);
+  // if(req.user){
+
+  // }
+  res.json(true);
+});
+
 //로그아웃 기능 확인 필요 (예정)
 router.get("/logout", (req, res, next) => {
   req.logout();

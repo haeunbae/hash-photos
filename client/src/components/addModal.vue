@@ -42,7 +42,6 @@
 <script>
 import vue2Dropzone from "vue2-dropzone";
 import "vue2-dropzone/dist/vue2Dropzone.min.css";
-// import axios from "axios";
 export default {
   components: {
     vueDropzone: vue2Dropzone,
@@ -56,6 +55,8 @@ export default {
   data() {
     return {
       dropzoneOptions: {
+        autoProcessQueue: false,
+        addRemoveLinks: true,
         url: "https://localhost:3004/images",
         thumbnailWidth: 200,
         thumbnailHeight: 200,
@@ -79,9 +80,12 @@ export default {
       this.submit();
     },
   },
+  created() {},
   methods: {
     open() {
       this.showModal = true;
+      // console.log("create!");
+      // this.$refs.imgDropZone.disable();
     },
     close() {
       this.showModal = false;
@@ -99,8 +103,7 @@ export default {
       console.log(this.imgInfo.hashtag);
     },
     save() {
-      console.log(this.imgInfo);
-      console.log(typeof this.imgInfo.imgFile);
+      this.$axios.get("/session").then((res) => {});
 
       var formData = new FormData();
 
@@ -139,7 +142,7 @@ export default {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css?family=Work+Sans:300,400");
+/* @import url("https://fonts.googleapis.com/css?family=Work+Sans:300,400"); */
 /* Modal */
 .modal,
 .overlay {
@@ -156,13 +159,12 @@ export default {
 .modal-card {
   position: relative;
   max-width: 80%;
-  /* left: 25%; */
+  z-index: 10;
   top: 20%;
   margin: auto;
   width: 50%;
   background-color: white;
   min-height: 500px;
-  z-index: 10;
   opacity: 1;
   animation-name: animatetop;
   animation-duration: 0.8s;
@@ -193,12 +195,30 @@ h3 {
 .dropzone {
   min-height: 300px;
   background: white;
-  padding: 20px 20px;
+  /* padding: 20px 20px; */
   flex-grow: 2;
+  height: 300px;
+}
+
+.dropzone .dz-preview {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  /* margin: 16px; */
+  min-height: 100px;
 }
 
 .vue-dropzone > .dz-preview .dz-details {
   background-color: rgba(33, 150, 243, 0);
+}
+
+.dropzone .dz-preview.dz-image-preview {
+  width: 100%;
+  height: 100%;
+}
+
+.dropzone .dz-progress {
+  display: none;
 }
 
 .wrapper {

@@ -8,13 +8,17 @@
       </div>
     </div>
 
-    <button @click="open">test</button>
+    <!-- <button @click="open"></button> -->
+    <span @click="open" class="plus-btn"
+      ><font-awesome-icon icon="plus" class="fas plus fa-2x"
+    /></span>
     <modal ref="modal"></modal>
   </div>
 </template>
 
 <script>
 import modal from "../components/addModal";
+
 export default {
   components: {
     modal,
@@ -57,9 +61,6 @@ export default {
 .image-container {
   margin: auto;
   max-width: 1200px;
-  /* min-height: calc(100vh - 54px); */
-  /* max-width: 800px;
-  height: 100%; */
   padding: 20px;
   background-color: rgba(var(--b3f, 250, 250, 250), 1);
   display: flex;
@@ -79,7 +80,6 @@ export default {
   width: 33%;
   background-color: white;
   padding: 0;
-  /* margin: 10px; */
   margin: 0 auto;
   padding-bottom: 30%;
   position: relative;
@@ -92,5 +92,12 @@ img {
   position: absolute;
   /* top: 0; */
   left: 0;
+}
+
+.plus-btn {
+  position: fixed;
+  right: 5%;
+  bottom: 5%;
+  cursor: pointer;
 }
 </style>

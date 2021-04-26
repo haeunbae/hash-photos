@@ -10,18 +10,30 @@
         placeholder="검색"
         maxlength="75"
       />
-      <span> test button</span>
+      <button @click="open">upload Photo</button>
+      <modal ref="modal"></modal>
     </div>
   </div>
   <!-- </fixed-header> -->
 </template>
 
 <script>
-// import FixedHeader from "vue-fixed-header";
+import modal from "../components/addModal";
 
 export default {
   components: {
-    // FixedHeader,
+    modal,
+  },
+  data() {
+    return {
+      showModal: false,
+    };
+  },
+  methods: {
+    open() {
+      // this.showModal = !this.showModal;
+      this.$refs.modal.open();
+    },
   },
 };
 </script>
