@@ -25,7 +25,7 @@ router.post("/image", upload.single("img"), async (req, res, next) => {
       data: {
         img_path: req.file.path,
         img_tag: req.body.hashtag,
-        user_id: "haeun.bae.77",
+        user_id: req.body.user_id,
       },
     });
 

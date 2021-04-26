@@ -63,6 +63,9 @@ export default {
           pw: this.userPw,
         })
         .then((res) => {
+          // state에 user정보 저장
+          this.$store.commit("setUser", res.data.user);
+
           if (res.status === 200) {
             alert("로그인되었습니다.");
             this.$router.push("/home");

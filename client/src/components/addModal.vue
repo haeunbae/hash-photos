@@ -17,6 +17,7 @@
           id="customdropzone"
           :options="dropzoneOptions"
           @vdropzone-file-added="vfileAdded"
+          @vdropzone-file-added-manually="vfileAdded"
         ></vue-dropzone>
 
         <p class="info">Type your hashtag(ex. #HashTag")</p>
@@ -55,7 +56,7 @@ export default {
   data() {
     return {
       dropzoneOptions: {
-        url: "https://locaslhost:3004/image",
+        url: "https://localhost:3004/images",
         thumbnailWidth: 200,
         thumbnailHeight: 200,
         acceptedFiles: ".jpg, .jpeg, .png",
@@ -81,13 +82,11 @@ export default {
   methods: {
     open() {
       this.showModal = true;
-      console.log(this.showModal);
     },
     close() {
       this.showModal = false;
     },
     submit() {
-      // const tag = '#해시 #태그 #앵 ㅇㄹㅇㄹ';
       this.imgInfo.hashtag = this.hashtag
         .split(/(#[^\s#]+)/g)
         .filter((value) => {
@@ -107,9 +106,7 @@ export default {
 
       formData.append("hashtag", this.imgInfo.hashtag);
       formData.append("img", this.imgInfo.imgFile, this.imgInfo.imgFile.name);
-
-      // axios.defaults.headers.post["Content-Type"] =
-      //   "application/x-www-form-urlencoded";
+      formData.append("user_id", this.$store.state.user_id);
       this.$axios
         .post("/image", formData, {
           headers: { "Content-Type": "multipart/form-data" },
@@ -131,12 +128,12 @@ export default {
       console.log(file);
       this.imgInfo.imgFile = file;
     },
-    vfiledroped(e) {
-      console.log(e);
-    },
-    clickremove(file) {
-      console.log(file);
-    },
+    // vfiledroped(e) {
+    //   console.log(e);
+    // },
+    // clickremove(file) {
+    //   console.log(file);
+    // },
   },
 };
 </script>
