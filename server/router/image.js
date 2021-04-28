@@ -18,18 +18,21 @@ const router = Router();
 
 router.post("/image", upload.single("img"), async (req, res, next) => {
   try {
-    console.log("file:: ", req.file);
-    console.log("body:: ", req.body);
+    console.log("file path : ", req.file.path);
+    console.log("hashtag : ", req.body.hashtag);
+    console.log("user ID : ", req.body.user_id);
 
-    const insertImg = await db.img_info.create({
+    // console.log(db.img_info);
+    let insertImg = await db.img_info.create({
       data: {
         img_path: req.file.path,
         img_tag: req.body.hashtag,
         user_id: req.body.user_id,
       },
     });
-
-    res.json(insertImg);
+    // console.log("img create::::");
+    console.log(insertImg);
+    // res.json(insertImg);
   } catch (error) {
     console.log(error);
   }

@@ -73,6 +73,7 @@ export default {
         imgFile: null,
         hashtag: "",
       },
+      uploadUser: "",
     };
   },
   watch: {
@@ -103,29 +104,34 @@ export default {
       console.log(this.imgInfo.hashtag);
     },
     save() {
-      this.$axios.get("/session").then((res) => {});
+      this.$axios.get("/session").then((res) => {
+        console.log(res);
+        this.uploadUser = res.data;
+        var formData = new FormData();
 
-      var formData = new FormData();
-
-      formData.append("hashtag", this.imgInfo.hashtag);
-      formData.append("img", this.imgInfo.imgFile, this.imgInfo.imgFile.name);
-      formData.append("user_id", this.$store.state.user_id);
-      this.$axios
-        .post("/image", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        })
-        .then((res) => {
-          console.log(res);
-          this.imgInfo = {};
-          this.hashtag = "";
-          if (res.status === 200) {
-            alert("저장되었습니다.");
-            this.close();
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+        formData.append("hashtag", this.imgInfo.hashtag);
+        formData.append("img", this.imgInfo.imgFile, this.imgInfo.imgFile.name);
+        formData.append("user_id", this.uploadUser);
+        this.$axios
+          .post("/image", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            console.log("axios post :::::");
+            console.log(res);
+            this.imgInfo = {};
+            this.hashtag = "";
+            if (res.status === 200) {
+              alert("저장되었습니다.");
+              this.close();
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      });
     },
     vfileAdded(file) {
       console.log(file);

@@ -38,12 +38,14 @@
           계정이 없으신가요? <a href="/signUp" tabindex="0">가입하기</a>
         </p>
       </section>
+      <button @click="tokenTest">test</button>
     </div>
   </body>
 </template>
 
 <script>
 import header from "./loginHeader";
+import axios from "axios";
 export default {
   name: "login",
   components: { Header: header },
@@ -75,6 +77,26 @@ export default {
         })
         .catch(function (error) {
           console.log(error);
+        });
+    },
+    tokenTest() {
+      // let params = {
+      //   userType: "U",
+      //   emailAddr: "serim@kono.ai",
+      //   passCode: "test123456!!!",
+      // };
+
+      axios
+        .post("http://localhost:3004/api/authentication", {
+          userType: "U",
+          emailAddr: "serim@kono.ai",
+          passCode: "test123456!!!",
+        })
+        .then((res) => {
+          if (res.data.token) {
+            localStorage.setItem("jwt-token", res.data.token);
+          }
+          // console.log(res.data.token);
         });
     },
   },
