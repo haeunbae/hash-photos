@@ -1,51 +1,25 @@
 <template>
   <div class="modal" v-if="showModal">
     <div class="overlay"></div>
+    <span @click="close" class="close-btn"
+      ><font-awesome-icon icon="times" class="fas times fa-2x"
+    /></span>
     <div class="modal-card">
       <!-- modal header-->
-      <div class="modal-header">
-        <h3>upload your image</h3>
-        <span @click="close"
-          ><font-awesome-icon icon="times" class="fas times fa-2x"
-        /></span>
-      </div>
+      <!-- <div class="modal-header">
+        <h3>hashtag</h3>
+        
+      </div> -->
       <!--modal content-->
-      <div class="card-wrapper">
-        <vue-dropzone
-          v-model="image"
-          ref="imgDropZone"
-          id="customdropzone"
-          :options="dropzoneOptions"
-          @vdropzone-file-added="vfileAdded"
-          @vdropzone-file-added-manually="vfileAdded"
-        ></vue-dropzone>
-
-        <p class="info">Type your hashtag(ex. #HashTag")</p>
-        <div class="wrapper">
-          <input
-            type="text"
-            id="hashtags"
-            autocomplete="off"
-            v-model="hashtag"
-            v-on:keyup.enter="submit"
-          />
-
-          <div class="tag-container"></div>
-        </div>
-
+      <!-- <div class="card-wrapper">
         <button class="save-btn" @click="save"><h3>save it!</h3></button>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script>
-import vue2Dropzone from "vue2-dropzone";
-import "vue2-dropzone/dist/vue2Dropzone.min.css";
 export default {
-  components: {
-    vueDropzone: vue2Dropzone,
-  },
   props: {
     showModal: {
       type: Boolean,
@@ -83,9 +57,10 @@ export default {
   },
   created() {},
   methods: {
-    open() {
+    open(img) {
       this.showModal = true;
-      // console.log("create!");
+
+      console.log(img);
       // this.$refs.imgDropZone.disable();
     },
     close() {
@@ -103,31 +78,7 @@ export default {
 
       console.log(this.imgInfo.hashtag);
     },
-    save() {
-      var formData = new FormData();
-
-      formData.append("hashtag", this.imgInfo.hashtag);
-      formData.append("img", this.imgInfo.imgFile, this.imgInfo.imgFile.name);
-      this.$axios
-        .post("/image", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          console.log("axios post :::::");
-          console.log(res);
-          this.imgInfo = {};
-          this.hashtag = "";
-          if (res.status === 200) {
-            alert("저장되었습니다.");
-            this.close();
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
+    save() {},
     vfileAdded(file) {
       console.log(file);
       this.imgInfo.imgFile = file;
@@ -154,7 +105,7 @@ export default {
   top: 0;
 }
 .overlay {
-  opacity: 0.5;
+  opacity: 0.3;
   background-color: black;
 }
 .modal-card {
@@ -169,16 +120,6 @@ export default {
   opacity: 1;
   animation-name: animatetop;
   animation-duration: 0.8s;
-}
-.modal-header {
-  padding: 2px 16px;
-  background-color: #5cb85c;
-  color: white;
-  display: flex;
-  flex-direction: row;
-  height: 50px;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .close {
@@ -292,6 +233,12 @@ input {
   margin-top: 10px;
 }
 
+.close-btn {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  color: white;
+}
 @keyframes animatetop {
   from {
     top: 0;

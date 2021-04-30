@@ -28,10 +28,11 @@ router.post("/login", (req, res, next) => {
 });
 
 router.get("/session", (req, res, next) => {
-  console.log("req usere::::", req.session.passport.user);
-  if (req.session.passport.user) {
-    res.json(req.session.passport.user.user_id);
-  }
+  console.log(req.user);
+  // console.log("req usere::::", req.session.passport.user);
+  // if (req.session.passport.user) {
+  //   res.json(req.session.passport.user.user_id);
+  // }
 });
 
 //로그아웃 기능 확인 필요 (예정)

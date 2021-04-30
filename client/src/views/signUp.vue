@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import header from "./loginHeader";
+import header from "../components/LoginHeader";
 export default {
   components: { Header: header },
   data() {

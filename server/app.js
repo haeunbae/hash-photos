@@ -47,10 +47,6 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(passport.initialize()); // passport 구동
-app.use(passport.session()); // 세션 연결
-passportConfig();
-
 app.use(morgan("dev"));
 
 app.use(
@@ -66,6 +62,9 @@ app.use(
     },
   })
 );
+app.use(passport.initialize()); // passport 구동
+app.use(passport.session()); // 세션 연결
+passportConfig();
 
 app.use("/images", express.static("images"));
 

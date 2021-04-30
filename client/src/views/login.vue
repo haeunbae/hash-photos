@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import header from "./loginHeader";
+import header from "../components/LoginHeader";
 import axios from "axios";
 export default {
   name: "login",
@@ -80,18 +80,14 @@ export default {
         });
     },
     tokenTest() {
-      // let params = {
-      //   userType: "U",
-      //   emailAddr: "serim@kono.ai",
-      //   passCode: "test123456!!!",
-      // };
+      let params = {
+        userType: "U",
+        emailAddr: "serim@kono.ai",
+        passCode: "test123456!!!",
+      };
 
       axios
-        .post("http://localhost:3004/api/authentication", {
-          userType: "U",
-          emailAddr: "serim@kono.ai",
-          passCode: "test123456!!!",
-        })
+        .post("http://localhost:3004/api/authentication", params)
         .then((res) => {
           if (res.data.token) {
             localStorage.setItem("jwt-token", res.data.token);
