@@ -12,6 +12,7 @@ const routes = [
     path: "*",
     name: "login",
     redirect: "/login",
+    beforeenter: () => {},
   },
   {
     path: "/login",

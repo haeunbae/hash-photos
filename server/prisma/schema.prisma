@@ -21,5 +21,5 @@ model img_info {
   img_tag   String
   user_info  user_info @relation(fields: [user_id], references: [user_id])
   user_id String   
-  img_id String @unique
+  img_id Int @default(autoincrement())
 }

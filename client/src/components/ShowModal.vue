@@ -28,21 +28,7 @@ export default {
   },
   data() {
     return {
-      dropzoneOptions: {
-        autoProcessQueue: false,
-        addRemoveLinks: true,
-        url: "https://localhost:3004/images",
-        thumbnailWidth: 200,
-        thumbnailHeight: 200,
-        acceptedFiles: ".jpg, .jpeg, .png",
-        dictDefaultMessage: `<p class='text-default'><i class='fa fa-cloud-upload mr-2'></i> Drag Images or Click Here</p>
-          <p class="form-text">Allowed Files: .jpg, .jpeg, .png</p>
-          `,
-        maxFiles: 1,
-      },
-      images: [],
-      hashtag: "",
-      image: "",
+      image: {},
       imgInfo: {
         imgFile: null,
         hashtag: "",
@@ -57,38 +43,35 @@ export default {
   },
   created() {},
   methods: {
-    open(img) {
+    open(img_id) {
       this.showModal = true;
 
-      console.log(img);
-      // this.$refs.imgDropZone.disable();
+      console.log(img_id);
+      this.fetch(img_id);
     },
     close() {
       this.showModal = false;
     },
-    submit() {
-      this.imgInfo.hashtag = this.hashtag
-        .split(/(#[^\s#]+)/g)
-        .filter((value) => {
-          if (value.match(/(#[^\s#]+)/)) {
-            return value;
-          }
-        })
-        .join("");
+    fetch(img_id) {
+      // let params = {
+      //   img_id,
+      // };
 
-      console.log(this.imgInfo.hashtag);
+      this.$axios
+        .get("/image", img_id)
+        .then((res) => {
+          console.log(res.data);
+          // this.image = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     save() {},
     vfileAdded(file) {
       console.log(file);
       this.imgInfo.imgFile = file;
     },
-    // vfiledroped(e) {
-    //   console.log(e);
-    // },
-    // clickremove(file) {
-    //   console.log(file);
-    // },
   },
 };
 </script>

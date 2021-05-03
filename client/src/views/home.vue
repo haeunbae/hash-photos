@@ -5,8 +5,8 @@
         <div
           class="img-box"
           v-for="img in rowImgs"
-          :key="img.img_path"
-          @click="show(img)"
+          :key="img.img_id"
+          @click="show(img.img_id)"
         >
           <img :src="`http://localhost:3004/${img.img_path}`" />
         </div>
@@ -49,17 +49,17 @@ export default {
     },
     fetch() {
       this.$axios
-        .get("/image")
+        .get("/images")
         .then((res) => {
-          console.log(res.data);
+          console.log(res);
           this.images = res.data;
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    show(img) {
-      this.$refs.showModal.open(img);
+    show(img_id) {
+      this.$refs.showModal.open(img_id);
     },
   },
 };

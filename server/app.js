@@ -66,7 +66,7 @@ app.use(passport.initialize()); // passport 구동
 app.use(passport.session()); // 세션 연결
 passportConfig();
 
-app.use("/images", express.static("images"));
+// app.use("/images", express.static("images"));
 
 app.use(express.json({ limit: "mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: false }));

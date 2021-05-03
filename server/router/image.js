@@ -4,6 +4,8 @@ const multer = require("multer");
 const uuid = require("uuid");
 const path = require("path");
 
+// const img_uuid = uuid.v1();
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join("images/"));
@@ -17,12 +19,13 @@ let upload = multer({ storage: storage });
 
 const router = Router();
 
+//img 등록
 router.post("/image", upload.single("img"), async (req, res, next) => {
   try {
-    // console.log("file path : ", req.file.path);
-    // console.log("hashtag : ", req.body.hashtag);
-    // console.log("user ID : ", req.user);
-
+    console.log("file path : ", req.file.path);
+    console.log("hashtag : ", req.body.hashtag);
+    console.log("user ID : ", req.user);
+    // console.log("uuuid ::: ", img_uuid);
     const insertImg = await db.img_info.create({
       data: {
         img_path: req.file.path,
@@ -37,7 +40,8 @@ router.post("/image", upload.single("img"), async (req, res, next) => {
   }
 });
 
-router.get("/image", async (req, res, next) => {
+//images조회 (3개씩 분할 조회)
+router.get("/images", async (req, res, next) => {
   try {
     let getImgs = await db.img_info.findMany();
 
@@ -45,6 +49,22 @@ router.get("/image", async (req, res, next) => {
     console.log(getImgs);
 
     res.json(getImgs);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+//img개별 조회
+router.get("/image", async (req, res, next) => {
+  try {
+    // let img_id = req;
+    // console.log(img_id);
+    // const img = await db.img_info.findFirst({
+    //   where: {
+    //     img_id,
+    //   },
+    // });
+    // res.json(img);
   } catch (error) {
     console.log(error);
   }
