@@ -4,16 +4,24 @@
     <span @click="close" class="close-btn"
       ><font-awesome-icon icon="times" class="fas times fa-2x"
     /></span>
-    <div class="modal-card">
-      <!-- modal header-->
-      <!-- <div class="modal-header">
-        <h3>hashtag</h3>
-        
-      </div> -->
-      <!--modal content-->
-      <!-- <div class="card-wrapper">
-        <button class="save-btn" @click="save"><h3>save it!</h3></button>
-      </div> -->
+    <div class="modal-area">
+      <span class="prev-section">
+        <font-awesome-icon
+          icon="chevron-left"
+          class="fas fa-chevron-left prev-icon"
+        ></font-awesome-icon>
+      </span>
+      <div class="modal-card">
+        <div class="card-wrapper">
+          <img :src="`http://localhost:3004/${nowImg.img_path}`" />
+        </div>
+      </div>
+      <span class="next-section">
+        <font-awesome-icon
+          icon="chevron-right"
+          class="fas fa-chevron-right next-icon"
+        ></font-awesome-icon>
+      </span>
     </div>
   </div>
 </template>
@@ -34,6 +42,9 @@ export default {
         hashtag: "",
       },
       uploadUser: "",
+      nowImg: {},
+      prevImg: {},
+      nextImg: {},
     };
   },
   watch: {
@@ -43,22 +54,43 @@ export default {
   },
   created() {},
   methods: {
-    open(img_id) {
+    open(showImgs, img) {
       this.showModal = true;
 
-      console.log(img_id);
-      this.fetch(img_id);
+      console.log(showImgs, img);
+
+      this.nowImg = img;
+
+      const nowIdx = showImgs.findIndex((item) => item.img_id === img.img_id);
+      console.log(nowIdx);
+
+      // console.log(this.showImgs[nowIdx]);
+      // console.log(this.showImgs[nowIdx + 1]);
+
+      if (showImgs[nowIdx - 1]) {
+        this.prevImg = showImgs[nowIdx - 1];
+      } else if (showImgs[nowIdx + 1]) {
+        this.nextImg = showImgs[nowIdx + 1];
+      }
+
+      console.log(this.nowImg);
+      console.log(this.prevImg);
+      console.log(this.nextImg);
     },
     close() {
       this.showModal = false;
+
+      this.nowImg = {};
+      this.prevImg = {};
+      this.nextImg = {};
     },
     fetch(img_id) {
-      // let params = {
-      //   img_id,
-      // };
+      let params = {
+        img_id,
+      };
 
       this.$axios
-        .get("/image", img_id)
+        .get("/image", params)
         .then((res) => {
           console.log(res.data);
           // this.image = res.data;
@@ -221,6 +253,48 @@ input {
   right: 20px;
   top: 20px;
   color: white;
+}
+
+.modal-area {
+  display: flex;
+  position: relative;
+  top: 20%;
+}
+
+.prev-section {
+  position: relative;
+  max-width: 25%;
+  z-index: 10;
+  top: 50%;
+  margin: auto;
+  min-height: 500px;
+  opacity: 1;
+}
+
+.next-section {
+  position: relative;
+  max-width: 25%;
+  z-index: 10;
+  top: 20%;
+  margin: auto;
+  min-height: 500px;
+  opacity: 1;
+}
+
+.next-icon {
+  width: 50px;
+  height: 50px;
+  position: fixed;
+  top: 50%;
+  right: 10%;
+}
+
+.prev-icon {
+  width: 50px;
+  height: 50px;
+  position: fixed;
+  top: 50%;
+  left: 10%;
 }
 @keyframes animatetop {
   from {

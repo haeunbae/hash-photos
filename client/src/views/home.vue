@@ -6,7 +6,7 @@
           class="img-box"
           v-for="img in rowImgs"
           :key="img.img_id"
-          @click="show(img.img_id)"
+          @click="show(img)"
         >
           <img :src="`http://localhost:3004/${img.img_path}`" />
         </div>
@@ -37,6 +37,7 @@ export default {
     return {
       showModal: false,
       images: [],
+      selectImg: [],
     };
   },
   created() {
@@ -52,14 +53,28 @@ export default {
         .get("/images")
         .then((res) => {
           console.log(res);
-          this.images = res.data;
+          this.images = res.data.formatImgs;
+          this.selectImg = res.data.getImgs;
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    show(img_id) {
-      this.$refs.showModal.open(img_id);
+    show(img) {
+      const nowIdx = this.selectImg.findIndex(
+        (item) => item.img_id === img.img_id
+      );
+      let showImgs = [];
+
+      if (nowIdx === 0) {
+        showImgs = this.selectImg.slice(0, 2);
+      } else {
+        showImgs = this.selectImg.slice(nowIdx - 1, nowIdx + 2);
+      }
+
+      console.log(showImgs);
+
+      this.$refs.showModal.open(showImgs, img);
     },
   },
 };

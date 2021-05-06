@@ -45,10 +45,10 @@ router.get("/images", async (req, res, next) => {
   try {
     let getImgs = await db.img_info.findMany();
 
-    getImgs = division(getImgs, 3);
-    console.log(getImgs);
+    formatImgs = division(getImgs, 3);
+    console.log(formatImgs);
 
-    res.json(getImgs);
+    res.json({ getImgs, formatImgs });
   } catch (error) {
     console.log(error);
   }
@@ -57,13 +57,13 @@ router.get("/images", async (req, res, next) => {
 //img개별 조회
 router.get("/image", async (req, res, next) => {
   try {
-    // let img_id = req;
-    // console.log(img_id);
-    // const img = await db.img_info.findFirst({
-    //   where: {
-    //     img_id,
-    //   },
-    // });
+    let img_id = req;
+    console.log(img_id);
+    const img = await db.img_info.findFirst({
+      where: {
+        img_id,
+      },
+    });
     // res.json(img);
   } catch (error) {
     console.log(error);
