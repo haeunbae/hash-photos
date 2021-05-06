@@ -9,6 +9,7 @@
           @click="show(img)"
         >
           <img :src="`http://localhost:3004/${img.img_path}`" />
+          <!-- <img src="http://localhost:3004/images/다운로드.png" /> -->
         </div>
       </div>
     </div>
@@ -24,7 +25,7 @@
 
 <script>
 // import header from "../components/HomeHeader";
-import addModal from "../components/AddModal.vue";
+import addModal from "../components/AddModal";
 import showModal from "../components/ShowModal.vue";
 
 export default {
@@ -96,12 +97,12 @@ export default {
   /* flex-wrap: wrap; */
   justify-content: flex-start;
   align-content: flex-start;
-  height: 700px;
+  height: 1100px;
   overflow-y: scroll;
 }
 .img-row {
   width: 100%;
-  max-height: 320px;
+  max-height: 400px;
   display: flex;
   /* border: solid 1px grey; */
 }
