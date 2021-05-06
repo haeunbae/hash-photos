@@ -50,7 +50,7 @@ export default {
     },
     fetch() {
       this.$axios
-        .get("/images")
+        .get("/image/list")
         .then((res) => {
           console.log(res);
           this.images = res.data.formatImgs;
@@ -61,20 +61,20 @@ export default {
         });
     },
     show(img) {
-      const nowIdx = this.selectImg.findIndex(
-        (item) => item.img_id === img.img_id
-      );
-      let showImgs = [];
+      // const nowIdx = this.selectImg.findIndex(
+      //   (item) => item.img_id === img.img_id
+      // );
+      // let showImgs = [];
 
-      if (nowIdx === 0) {
-        showImgs = this.selectImg.slice(0, 2);
-      } else {
-        showImgs = this.selectImg.slice(nowIdx - 1, nowIdx + 2);
-      }
+      // if (nowIdx === 0) {
+      //   showImgs = this.selectImg.slice(0, 2);
+      // } else {
+      //   showImgs = this.selectImg.slice(nowIdx - 1, nowIdx + 2);
+      // }
 
-      console.log(showImgs);
+      // console.log(showImgs);
 
-      this.$refs.showModal.open(showImgs, img);
+      this.$refs.showModal.open(this.selectImg, img);
     },
   },
 };

@@ -8,7 +8,7 @@ const path = require("path");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join("images/"));
+    cb(null, "images/");
   },
   filename: function (req, file, cb) {
     cb(null, uuid.v1() + file.originalname);
@@ -41,7 +41,7 @@ router.post("/image", upload.single("img"), async (req, res, next) => {
 });
 
 //images조회 (3개씩 분할 조회)
-router.get("/images", async (req, res, next) => {
+router.get("/image/list", async (req, res, next) => {
   try {
     let getImgs = await db.img_info.findMany();
 

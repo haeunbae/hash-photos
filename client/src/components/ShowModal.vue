@@ -12,8 +12,13 @@
         ></font-awesome-icon>
       </span>
       <div class="modal-card">
+        <h3>{{ nowImg.img_tag }}</h3>
         <div class="card-wrapper">
-          <img :src="`http://localhost:3004/${nowImg.img_path}`" />
+          <span
+            style="width: 100%; height: 100%; background-color: grey"
+          ></span>
+          <!-- <img src="http://localhost:3004/images/logo.png" /> -->
+          <!-- <img :src="`http://localhost:3004/${nowImg.img_path}`" /> -->
         </div>
       </div>
       <span class="next-section">
@@ -62,10 +67,6 @@ export default {
       this.nowImg = img;
 
       const nowIdx = showImgs.findIndex((item) => item.img_id === img.img_id);
-      console.log(nowIdx);
-
-      // console.log(this.showImgs[nowIdx]);
-      // console.log(this.showImgs[nowIdx + 1]);
 
       if (showImgs[nowIdx - 1]) {
         this.prevImg = showImgs[nowIdx - 1];
@@ -108,7 +109,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 /* @import url("https://fonts.googleapis.com/css?family=Work+Sans:300,400"); */
 /* Modal */
 .modal,
@@ -141,13 +142,17 @@ export default {
   margin-left: auto;
 }
 
-h3 {
-  color: white;
+img {
+  display: inline;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 .card-wrapper {
-  display: flex;
-  flex-direction: column;
+  margin: 0 auto;
+  width: 90%;
+  height: 90%;
 }
 .dropzone {
   min-height: 300px;
@@ -190,11 +195,12 @@ h3 {
   border: solid 0px white;
 }
 
-/* h3 {
-  margin: 10px 14px 10px 0;
-  font-weight: 300;
-  font-size: 36px;
-} */
+h3 {
+  color: #42b983;
+  text-align: start;
+  padding: 10px;
+  /* margin-bottom: 0px; */
+}
 
 p {
   margin: 10px 10px;
