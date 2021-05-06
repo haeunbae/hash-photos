@@ -5,28 +5,34 @@
       ><font-awesome-icon icon="times" class="fas times fa-2x"
     /></span>
     <div class="modal-area">
-      <span class="prev-section">
+      <span class="prev-section" @click="move(prevImg)" v-show="prevImg">
         <font-awesome-icon
+        
+        
           icon="chevron-left"
           class="fas fa-chevron-left prev-icon"
         ></font-awesome-icon>
       </span>
+      <span class="prev-section" v-show="!prevImg"></span>
       <div class="modal-card">
         <h3>{{ nowImg.img_tag }}</h3>
         <div class="card-wrapper">
-          <span
+          <!-- <span
             style="width: 100%; height: 100%; background-color: grey"
-          ></span>
+          ></span> -->
           <!-- <img src="http://localhost:3004/images/logo.png" /> -->
-          <!-- <img :src="`http://localhost:3004/${nowImg.img_path}`" /> -->
+          <img :src="`http://localhost:3004/${nowImg.img_path}`" />
         </div>
       </div>
-      <span class="next-section">
+      <span class="next-section" @click="move(nextImg)" v-show="nextImg">
         <font-awesome-icon
+        
+        
           icon="chevron-right"
           class="fas fa-chevron-right next-icon"
         ></font-awesome-icon>
       </span>
+      <span class="next-section" v-show="!nextImg"></span>
     </div>
   </div>
 </template>
@@ -47,9 +53,10 @@ export default {
         hashtag: "",
       },
       uploadUser: "",
-      nowImg: {},
-      prevImg: {},
-      nextImg: {},
+      nowImg: null,
+      prevImg: null,
+      nextImg: null,
+      images:[]
     };
   },
   watch: {
@@ -63,48 +70,62 @@ export default {
       this.showModal = true;
 
       console.log(showImgs, img);
+      this.images = showImgs
 
-      this.nowImg = img;
+      this.move(img)
 
-      const nowIdx = showImgs.findIndex((item) => item.img_id === img.img_id);
+      // this.nowImg = img;
 
-      if (showImgs[nowIdx - 1]) {
-        this.prevImg = showImgs[nowIdx - 1];
-      } else if (showImgs[nowIdx + 1]) {
-        this.nextImg = showImgs[nowIdx + 1];
-      }
+      // const nowIdx = showImgs.findIndex((item) => item.img_id === img.img_id);
 
-      console.log(this.nowImg);
-      console.log(this.prevImg);
-      console.log(this.nextImg);
+      // if (showImgs[nowIdx - 1]) {
+      //   this.prevImg = showImgs[nowIdx - 1];
+      // } else if (showImgs[nowIdx + 1]) {
+      //   this.nextImg = showImgs[nowIdx + 1];
+      // }
+
+      // console.log(this.nowImg);
+      // console.log(this.prevImg);
+      // console.log(this.nextImg);
     },
     close() {
       this.showModal = false;
 
-      this.nowImg = {};
-      this.prevImg = {};
-      this.nextImg = {};
+      this.nowImg = null;
+      this.prevImg = null;
+      this.nextImg = null;
     },
-    fetch(img_id) {
-      let params = {
-        img_id,
-      };
+    move( img) {
+      // this.images = showImgs
 
-      this.$axios
-        .get("/image", params)
-        .then((res) => {
-          console.log(res.data);
-          // this.image = res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      this.nowImg = img;
+
+      const nowIdx = this.images.findIndex((item) => item.img_id === img.img_id);
+
+      if (this.images[nowIdx - 1]) {
+        this.prevImg = this.images[nowIdx - 1];
+      } 
+
+      if (this.images[nowIdx + 1]) {
+        this.nextImg = this.images[nowIdx + 1];
+      }
+
+      if(this.images.length === nowIdx+1){
+        this.nextImg = null
+      }
+
+      if(nowIdx === 0){
+        this.prevImg = null
+      }
+
+      console.log("now", this.nowImg);
+      console.log("prev",this.prevImg);
+      console.log("next", this.nextImg);
     },
     save() {},
-    vfileAdded(file) {
-      console.log(file);
-      this.imgInfo.imgFile = file;
-    },
+    // move(prevImg ){
+    //   this.showImg(prevImg)
+    // }
   },
 };
 </script>
@@ -144,15 +165,18 @@ export default {
 
 img {
   display: inline;
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
+  max-height:400px;
 }
 
 .card-wrapper {
   margin: 0 auto;
-  width: 90%;
-  height: 90%;
+    max-width: 90%;
+    max-height: 90%;
+    width: 480px;
+    height: 400px;
 }
 .dropzone {
   min-height: 300px;
@@ -291,7 +315,7 @@ input {
   width: 50px;
   height: 50px;
   position: fixed;
-  top: 50%;
+  top: 40%;
   right: 10%;
 }
 
@@ -299,7 +323,7 @@ input {
   width: 50px;
   height: 50px;
   position: fixed;
-  top: 50%;
+  top: 40%;
   left: 10%;
 }
 @keyframes animatetop {
