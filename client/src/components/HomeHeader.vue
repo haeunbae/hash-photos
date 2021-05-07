@@ -10,20 +10,21 @@
         placeholder="검색"
         maxlength="75"
       />
-      <button @click="open">upload Photo</button>
-      <modal ref="modal"></modal>
+      <font-awesome-icon icon="user" class="fas fa-user"></font-awesome-icon>
+      <!-- <button @click="open">upload Photo</button> -->
+      <!-- <modal ref="modal"></modal> -->
     </div>
   </div>
   <!-- </fixed-header> -->
 </template>
 
 <script>
-import modal from "../components/AddModal";
+// import modal from "../components/AddModal";
 
 export default {
-  components: {
-    modal,
-  },
+  // components: {
+  //   modal,
+  // },
   data() {
     return {
       showModal: false,

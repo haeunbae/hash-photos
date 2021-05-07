@@ -1,6 +1,7 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const db = require("./database");
+const bcrypt = require("bcrypt");
 
 module.exports = () => {
   passport.serializeUser((user, done) => {
@@ -22,13 +23,6 @@ module.exports = () => {
         passReqToCallback: false,
       },
       async (id, pw, done) => {
-        console.log(id, pw);
-        // if (id === "" || pw === "") {
-        //   return done(null, false, {
-        //     message: "잘못된 아이디 또는 패스워드 입니다.",
-        //   });
-        // }
-
         const userData = await db.user_info.findFirst({
           where: {
             use_yn: "Y",
@@ -40,10 +34,14 @@ module.exports = () => {
           return done(null, false, {
             message: "사용자 정보를 찾을수 없습니다.",
           });
-        if (pw !== userData.user_pw)
-          return done(null, false, {
-            message: "사용자 패스워드 에러입니다.",
-          });
+
+        //비밀번호 비교 다시 확인
+        // const comparePw = await bcrypt.compare(userData.user_pw, pw);
+        // console.log(comparePw);
+        // if (!comparePw)
+        //   return done(null, false, {
+        //     message: "사용자 패스워드 에러입니다.",
+        //   });
 
         return done(null, userData, {
           message: "로그인 성공",

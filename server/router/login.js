@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const db = require("../database");
 const passport = require("passport");
+const bcrypt = require("bcrypt");
 
 const router = Router();
 
@@ -43,15 +44,18 @@ router.get("/logout", (req, res, next) => {
   });
 });
 
+//회원가입
 router.post("/signup", async (req, res, next) => {
   const { id, name, pw } = req.body;
+
+  const encodedPw = await bcrypt.hash(pw, 10);
 
   try {
     const insertUser = await db.user_info.create({
       data: {
         user_id: id,
         user_nm: name,
-        user_pw: pw,
+        user_pw: encodedPw,
         use_yn: "Y",
       },
     });
