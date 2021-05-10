@@ -5,8 +5,11 @@
 			<div class="image-container">
 				<div class="img-row" v-for="(rowImgs, i) in images" :key="i">
 					<div class="img-box" v-for="img in rowImgs" :key="img.img_id" @click="show(img)">
-						<img :src="`http://localhost:3004/${img.img_path}`" />
-						<div class="hashtag">{{ img.img_tag }}</div>
+						<img src="http://localhost:3004/images/logo.png" />
+						<!-- <img :src="`http://localhost:3004/${img.img_path}`" /> -->
+						<div class="hashtag">
+							<h3>{{ img.img_tag }}</h3>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -122,12 +125,15 @@ img {
 	height: 100%;
 	object-fit: contain;
 	position: absolute;
-	/* top: 0; */
+
 	left: 0;
+	z-index: 2;
+	background-color: white;
 }
 
-img:hover {
+.img-box:hover img {
 	opacity: 0.5;
+	z-index: 1;
 }
 
 .hashtag {
@@ -137,15 +143,12 @@ img:hover {
 	width: 100%;
 	height: 100%;
 	/* opacity: 0;*/
-	z-index: -1;
-	display: none;
+	z-index: 1;
+	display: block;
 }
 
-.hashtag:hover {
-	/* opacity: 1; */
-	/* display: block; */
-	/* position: absolute; */
-	z-index: 10;
+.hashtag h3 {
+	color: black;
 }
 
 .plus-btn {

@@ -36,12 +36,12 @@ module.exports = () => {
           });
 
         //비밀번호 비교 다시 확인
-        // const comparePw = await bcrypt.compare(userData.user_pw, pw);
-        // console.log(comparePw);
-        // if (!comparePw)
-        //   return done(null, false, {
-        //     message: "사용자 패스워드 에러입니다.",
-        //   });
+        const comparePw = await bcrypt.compare(pw, userData.user_pw);
+        console.log(comparePw);
+        if (!comparePw)
+          return done(null, false, {
+            message: "사용자 패스워드 에러입니다.",
+          });
 
         return done(null, userData, {
           message: "로그인 성공",
