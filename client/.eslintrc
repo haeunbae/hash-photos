@@ -7,7 +7,7 @@
 	"parserOptions": {
 		"parser": "babel-eslint"
 	},
-	"extends": ["prettier", "prettier/vue", "plugin:prettier/recommended"],
+	"extends": ["prettier", "plugin:prettier/recommended", "plugin:vue/base"],
 	"plugins": ["prettier"],
 	"rules": {
 		"prettier/prettier": "warn",
