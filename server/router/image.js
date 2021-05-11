@@ -43,6 +43,7 @@ router.post("/image", upload.single("img"), async (req, res, next) => {
 //images조회 (3개씩 분할 조회)
 router.get("/image/list", async (req, res, next) => {
   try {
+    console.log(req.query);
     let getImgs = await db.img_info.findMany();
 
     formatImgs = division(getImgs, 3);

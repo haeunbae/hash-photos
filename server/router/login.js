@@ -36,11 +36,13 @@ router.get("/session", (req, res, next) => {
   // }
 });
 
-//로그아웃 기능 확인 필요 (예정)
-router.get("/logout", (req, res, next) => {
-  req.logout();
-  req.session.save(function () {
-    res.redirect("/");
+//로그아웃
+router.post("/logout", (req, res, next) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.send(err);
+    }
+    res.send(true);
   });
 });
 

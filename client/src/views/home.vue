@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Header />
+		<Header @getSearchData="getSearchData" @searchWithData="searchWithData" />
 		<div class="main">
 			<div class="image-container">
 				<div class="img-row" v-for="(rowImgs, i) in images" :key="i">
@@ -40,6 +40,7 @@ export default {
 			showModal: false,
 			images: [],
 			selectImg: [],
+			search: null,
 		};
 	},
 	created() {
@@ -77,6 +78,24 @@ export default {
 			// console.log(showImgs);
 
 			this.$refs.showModal.open(this.selectImg, img);
+		},
+		getSearchData(data) {
+			this.search = data;
+		},
+		searchWithData(search) {
+			let params = {
+				search: search,
+			};
+			this.$axios
+				.get('/image/list', params)
+				.then(res => {
+					console.log(res);
+					this.images = res.data.formatImgs;
+					this.selectImg = res.data.getImgs;
+				})
+				.catch(err => {
+					console.log(err);
+				});
 		},
 	},
 };
@@ -142,7 +161,6 @@ img {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	/* opacity: 0;*/
 	z-index: 1;
 	display: block;
 }
