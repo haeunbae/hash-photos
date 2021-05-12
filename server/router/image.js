@@ -25,7 +25,6 @@ router.post("/image", upload.single("img"), async (req, res, next) => {
     console.log("file path : ", req.file.path);
     console.log("hashtag : ", req.body.hashtag);
     console.log("user ID : ", req.user);
-    // console.log("uuuid ::: ", img_uuid);
     const insertImg = await db.img_info.create({
       data: {
         img_path: req.file.path,
@@ -43,8 +42,20 @@ router.post("/image", upload.single("img"), async (req, res, next) => {
 //images조회 (3개씩 분할 조회)
 router.get("/image/list", async (req, res, next) => {
   try {
-    console.log(req.query);
-    let getImgs = await db.img_info.findMany();
+    let where = {};
+    const { search } = req.query;
+
+    if (search) {
+      where = {
+        img_tag: {
+          contains: "#" + search,
+        },
+      };
+    }
+
+    let getImgs = await db.img_info.findMany({
+      where: where,
+    });
 
     formatImgs = division(getImgs, 3);
     console.log(formatImgs);
@@ -59,7 +70,6 @@ router.get("/image/list", async (req, res, next) => {
 router.get("/image", async (req, res, next) => {
   try {
     let img_id = req;
-    console.log(img_id);
     const img = await db.img_info.findFirst({
       where: {
         img_id,
