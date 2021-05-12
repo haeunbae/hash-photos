@@ -152,8 +152,6 @@ export default {
 	background-color: white;
 	min-height: 500px;
 	opacity: 1;
-	animation-name: animatetop;
-	animation-duration: 0.8s;
 }
 
 .close {
@@ -323,15 +321,5 @@ input {
 	position: fixed;
 	top: 40%;
 	left: 10%;
-}
-@keyframes animatetop {
-	from {
-		top: 0;
-		opacity: 0;
-	}
-	to {
-		top: 20%;
-		opacity: 1;
-	}
 }
 </style>

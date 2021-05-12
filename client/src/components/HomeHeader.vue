@@ -76,6 +76,7 @@ export default {
 	top: 0;
 	width: 100vw;
 	background-color: white;
+	z-index: 3;
 }
 
 .header-row {

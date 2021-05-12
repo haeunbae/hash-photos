@@ -5,8 +5,8 @@
 			<div class="image-container">
 				<div class="img-row" v-for="(rowImgs, i) in images" :key="i">
 					<div class="img-box" v-for="img in rowImgs" :key="img.img_id" @click="show(img)">
-						<img src="http://localhost:3004/images/logo.png" />
-						<!-- <img :src="`http://localhost:3004/${img.img_path}`" /> -->
+						<!-- <img src="http://localhost:3004/images/logo.png" /> -->
+						<img :src="`http://localhost:3004/${img.img_path}`" />
 						<div class="hashtag">
 							<h3>{{ img.img_tag }}</h3>
 						</div>
@@ -154,10 +154,14 @@ img {
 	height: 100%;
 	z-index: 1;
 	display: block;
+	display: flex;
+	align-items: center;
 }
-
-.hashtag h3 {
+.hashtag > h3 {
+	width: 80%;
 	color: black;
+	text-align: center;
+	margin: auto;
 }
 
 .plus-btn {
