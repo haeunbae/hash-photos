@@ -29,15 +29,15 @@
 import header from '../components/HomeHeader';
 import addModal from '../components/AddModal';
 import showModal from '../components/ShowModal.vue';
-import { ScrollContainer, ScrollItem } from 'vue-scrollmonitor';
+// import { ScrollContainer, ScrollItem } from 'vue-scrollmonitor';
 
 export default {
 	components: {
 		addModal,
 		showModal,
 		Header: header,
-		ScrollContainer,
-		ScrollItem,
+		// ScrollContainer,
+		// ScrollItem,
 	},
 	data() {
 		return {
