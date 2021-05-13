@@ -12,12 +12,13 @@
 						</div>
 					</div>
 				</div>
+				<div id="bottomSensor"></div>
 			</div>
 
-			<!-- <button @click="open"></button> -->
 			<span @click="open" class="plus-btn"
 				><font-awesome-icon icon="plus" class="fas plus fa-2x"
 			/></span>
+
 			<addModal ref="addModal"></addModal>
 			<showModal ref="showModal"></showModal>
 		</div>
@@ -28,12 +29,15 @@
 import header from '../components/HomeHeader';
 import addModal from '../components/AddModal';
 import showModal from '../components/ShowModal.vue';
+import { ScrollContainer, ScrollItem } from 'vue-scrollmonitor';
 
 export default {
 	components: {
 		addModal,
 		showModal,
 		Header: header,
+		ScrollContainer,
+		ScrollItem,
 	},
 	data() {
 		return {
@@ -41,19 +45,30 @@ export default {
 			images: [],
 			selectImg: [],
 			search: null,
+			searchCount: 1,
+			bottomSensor: null,
+			watcher: null,
 		};
 	},
 	created() {
 		this.fetch();
 	},
+	mounted() {
+		//DOM에 Vue인스턴스가 부착된 뒤 실행
+		this.bottomSensor = document.querySelector('#bottomSensor');
+		this.watcher = scrollMonitor.create(bottomSensor);
+
+		this.addScrollWatcher();
+	},
+	updated() {},
 	methods: {
 		open() {
-			// this.showModal = !this.showModal;
 			this.$refs.addModal.open();
 		},
 		fetch(search) {
 			let params = {
 				search: search,
+				count: this.searchCount,
 			};
 
 			this.$axios
@@ -61,7 +76,6 @@ export default {
 					params: params,
 				})
 				.then(res => {
-					console.log(res);
 					this.images = res.data.formatImgs;
 					this.selectImg = res.data.getImgs;
 				})
@@ -70,19 +84,6 @@ export default {
 				});
 		},
 		show(img) {
-			// const nowIdx = this.selectImg.findIndex(
-			//   (item) => item.img_id === img.img_id
-			// );
-			// let showImgs = [];
-
-			// if (nowIdx === 0) {
-			//   showImgs = this.selectImg.slice(0, 2);
-			// } else {
-			//   showImgs = this.selectImg.slice(nowIdx - 1, nowIdx + 2);
-			// }
-
-			// console.log(showImgs);
-
 			this.$refs.showModal.open(this.selectImg, img);
 		},
 		getSearchData(data) {
@@ -90,6 +91,16 @@ export default {
 		},
 		searchWithData(search) {
 			this.fetch(search);
+		},
+		addScrollWatcher() {
+			this.watcher.enterViewport(() => {
+				this.searchCount += 1;
+				console.log('update count :::', this.searchCount);
+				// 서버 과부하를 막기 위한 안전장치 0.5초
+				// setTimeout(() => {
+				this.fetch();
+				// }, 500);
+			});
 		},
 	},
 };
@@ -169,5 +180,11 @@ img {
 	right: 5%;
 	bottom: 5%;
 	cursor: pointer;
+}
+
+#bottomSensor {
+	background-color: burlywood;
+	width: 100%;
+	height: 10px;
 }
 </style>

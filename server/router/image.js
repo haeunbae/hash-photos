@@ -43,7 +43,8 @@ router.post("/image", upload.single("img"), async (req, res, next) => {
 router.get("/image/list", async (req, res, next) => {
   try {
     let where = {};
-    const { search } = req.query;
+    const { search, count } = req.query;
+    console.log("searchWord ::: ", search);
 
     if (search) {
       where = {
@@ -54,11 +55,14 @@ router.get("/image/list", async (req, res, next) => {
     }
 
     let getImgs = await db.img_info.findMany({
+      orderBy: {
+        img_id: "desc",
+      },
+      take: 9 * count,
       where: where,
     });
 
     formatImgs = division(getImgs, 3);
-    console.log(formatImgs);
 
     res.json({ getImgs, formatImgs });
   } catch (error) {
