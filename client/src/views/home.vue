@@ -5,8 +5,8 @@
 			<div class="image-container">
 				<div class="img-row" v-for="(rowImgs, i) in images" :key="i">
 					<div class="img-box" v-for="img in rowImgs" :key="img.img_id" @click="show(img)">
-						<!-- <img src="http://localhost:3004/images/logo.png" /> -->
-						<img :src="`http://localhost:3004/${img.img_path}`" />
+						<img src="http://localhost:3004/images/logo.png" />
+						<!-- <img :src="`http://localhost:3004/${img.img_path}`" /> -->
 						<div class="hashtag">
 							<h3>{{ img.img_tag }}</h3>
 						</div>
@@ -29,15 +29,15 @@
 import header from '../components/HomeHeader';
 import addModal from '../components/AddModal';
 import showModal from '../components/ShowModal.vue';
-// import { ScrollContainer, ScrollItem } from 'vue-scrollmonitor';
+import { ScrollContainer, ScrollItem } from 'vue-scrollmonitor';
 
 export default {
 	components: {
 		addModal,
 		showModal,
 		Header: header,
-		// ScrollContainer,
-		// ScrollItem,
+		ScrollContainer,
+		ScrollItem,
 	},
 	data() {
 		return {
@@ -180,10 +180,11 @@ img {
 	right: 5%;
 	bottom: 5%;
 	cursor: pointer;
+	z-index: 3;
 }
 
 #bottomSensor {
-	background-color: burlywood;
+	/* background-color: burlywood; */
 	width: 100%;
 	height: 10px;
 }

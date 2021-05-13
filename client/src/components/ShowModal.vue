@@ -19,7 +19,10 @@
             style="width: 100%; height: 100%; background-color: grey"
           ></span> -->
 					<!-- <img src="http://localhost:3004/images/logo.png" /> -->
-					<img :src="`http://localhost:3004/${nowImg.img_path}`" />
+					<img
+						:src="`http://localhost:3004/${nowImg.img_path}`"
+						@click="download(nowImg.img_tag)"
+					/>
 				</div>
 			</div>
 			<span class="next-section" @click="move(nextImg)" v-show="nextImg">
@@ -69,20 +72,6 @@ export default {
 			this.images = showImgs;
 
 			this.move(img);
-
-			// this.nowImg = img;
-
-			// const nowIdx = showImgs.findIndex((item) => item.img_id === img.img_id);
-
-			// if (showImgs[nowIdx - 1]) {
-			//   this.prevImg = showImgs[nowIdx - 1];
-			// } else if (showImgs[nowIdx + 1]) {
-			//   this.nextImg = showImgs[nowIdx + 1];
-			// }
-
-			// console.log(this.nowImg);
-			// console.log(this.prevImg);
-			// console.log(this.nextImg);
 		},
 		close() {
 			this.showModal = false;
@@ -119,9 +108,21 @@ export default {
 			console.log('next', this.nextImg);
 		},
 		save() {},
-		// move(prevImg ){
-		//   this.showImg(prevImg)
-		// }
+		download(fileTag) {
+			const filename = fileTag;
+			const text = 'test';
+
+			let element = document.createElement('a');
+			// const url = window.URL.createObjectURL(new Blob([]))
+			// element.setAttribute('href', );
+			element.setAttribute('download', filename);
+
+			element.style.display = 'none';
+			document.body.appendChild(element);
+
+			element.click();
+			document.body.removeChild(element);
+		},
 	},
 };
 </script>
