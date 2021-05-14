@@ -19,10 +19,11 @@
             style="width: 100%; height: 100%; background-color: grey"
           ></span> -->
 					<!-- <img src="http://localhost:3004/images/logo.png" /> -->
-					<img
-						:src="`http://localhost:3004/${nowImg.img_path}`"
-						@click="download(nowImg.img_tag)"
-					/>
+					<img :src="`http://localhost:3004/${nowImg.img_path}`" @click="download(nowImg)" />
+				</div>
+				<div class="btns-area">
+					<div class="btn-area"><font-awesome-icon icon="edit">수정</font-awesome-icon></div>
+					<div class="btn-area"><font-awesome-icon icon="trash-alt">삭제</font-awesome-icon></div>
 				</div>
 			</div>
 			<span class="next-section" @click="move(nextImg)" v-show="nextImg">
@@ -37,6 +38,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
 	props: {
 		showModal: {
@@ -68,7 +70,8 @@ export default {
 		open(showImgs, img) {
 			this.showModal = true;
 
-			console.log(showImgs, img);
+			// console.log(showImgs, img);
+			console.log(this.$store.state);
 			this.images = showImgs;
 
 			this.move(img);
@@ -81,8 +84,6 @@ export default {
 			this.nextImg = null;
 		},
 		move(img) {
-			// this.images = showImgs
-
 			this.nowImg = img;
 
 			const nowIdx = this.images.findIndex(item => item.img_id === img.img_id);
@@ -108,20 +109,24 @@ export default {
 			console.log('next', this.nextImg);
 		},
 		save() {},
-		download(fileTag) {
-			const filename = fileTag;
-			const text = 'test';
+		download(file) {
+			const filename = file.img_tag;
+			axios({
+				url: `http://localhost:3004/${file.img_path}`,
+				method: 'GET',
+				responseType: 'blob',
+			}).then(response => {
+				const imgType = response.data.type.split('/');
+				console.log(response.data.type.split('/'));
+				var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+				var fileLink = document.createElement('a');
 
-			let element = document.createElement('a');
-			// const url = window.URL.createObjectURL(new Blob([]))
-			// element.setAttribute('href', );
-			element.setAttribute('download', filename);
+				fileLink.href = fileURL;
+				fileLink.setAttribute('download', file.img_tag + '.' + imgType[1]);
+				document.body.appendChild(fileLink);
 
-			element.style.display = 'none';
-			document.body.appendChild(element);
-
-			element.click();
-			document.body.removeChild(element);
+				fileLink.click();
+			});
 		},
 	},
 };
@@ -322,5 +327,14 @@ input {
 	position: fixed;
 	top: 40%;
 	left: 10%;
+}
+
+.btns-area {
+	display: flex;
+}
+
+.btn-area {
+	width: 50%;
+	min-height: 50px;
 }
 </style>
