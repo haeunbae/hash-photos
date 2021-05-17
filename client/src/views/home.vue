@@ -63,7 +63,9 @@ export default {
 	updated() {},
 	methods: {
 		open() {
-			this.$refs.addModal.open();
+			this.$refs.addModal.open().then(res => {
+				this.fetch();
+			});
 		},
 		fetch(search) {
 			let params = {
@@ -135,7 +137,6 @@ export default {
 	padding: 0;
 	margin: 0 auto;
 	padding-bottom: 30%;
-	position: relative;
 	max-width: 300px;
 	max-height: 300px;
 	position: relative;

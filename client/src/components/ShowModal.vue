@@ -1,6 +1,6 @@
 <template>
 	<div class="modal" v-if="showModal">
-		<div class="overlay"></div>
+		<div class="overlay" @click="close"></div>
 		<span @click="close" class="close-btn"
 			><font-awesome-icon icon="times" class="fas times fa-2x"
 		/></span>
@@ -15,15 +15,15 @@
 			<div class="modal-card">
 				<h3>{{ nowImg.img_tag }}</h3>
 				<div class="card-wrapper">
-					<!-- <span
-            style="width: 100%; height: 100%; background-color: grey"
-          ></span> -->
-					<!-- <img src="http://localhost:3004/images/logo.png" /> -->
 					<img :src="`http://localhost:3004/${nowImg.img_path}`" @click="download(nowImg)" />
 				</div>
-				<div class="btns-area">
-					<div class="btn-area"><font-awesome-icon icon="edit">수정</font-awesome-icon></div>
-					<div class="btn-area"><font-awesome-icon icon="trash-alt">삭제</font-awesome-icon></div>
+				<div class="btns-area" v-show="isUploadUser">
+					<div class="btn-area" @click="updateMode">
+						<font-awesome-icon icon="edit" style="height: 100%">수정</font-awesome-icon>
+					</div>
+					<div class="btn-area">
+						<font-awesome-icon icon="trash-alt" style="height: 100%">삭제</font-awesome-icon>
+					</div>
 				</div>
 			</div>
 			<span class="next-section" @click="move(nextImg)" v-show="nextImg">
@@ -34,12 +34,17 @@
 			</span>
 			<span class="next-section" v-show="!nextImg"></span>
 		</div>
+		<updateModal ref="updateModal"></updateModal>
 	</div>
 </template>
 
 <script>
 import axios from 'axios';
+import updateModal from './UpdateModal';
 export default {
+	components: {
+		updateModal,
+	},
 	props: {
 		showModal: {
 			type: Boolean,
@@ -58,6 +63,7 @@ export default {
 			prevImg: null,
 			nextImg: null,
 			images: [],
+			isUploadUser: false,
 		};
 	},
 	watch: {
@@ -70,8 +76,11 @@ export default {
 		open(showImgs, img) {
 			this.showModal = true;
 
-			// console.log(showImgs, img);
-			console.log(this.$store.state);
+			if (img.user_id === this.$store.state.user_id) {
+				this.isUploadUser = true;
+				console.log(this.isUploadUser);
+			}
+
 			this.images = showImgs;
 
 			this.move(img);
@@ -104,11 +113,10 @@ export default {
 				this.prevImg = null;
 			}
 
-			console.log('now', this.nowImg);
-			console.log('prev', this.prevImg);
-			console.log('next', this.nextImg);
+			// console.log('now', this.nowImg);
+			// console.log('prev', this.prevImg);
+			// console.log('next', this.nextImg);
 		},
-		save() {},
 		download(file) {
 			const filename = file.img_tag;
 			axios({
@@ -127,6 +135,10 @@ export default {
 
 				fileLink.click();
 			});
+		},
+		updateMode() {
+			// this.close();
+			this.$refs.updateModal.open(this.nowImg);
 		},
 	},
 };
@@ -151,7 +163,7 @@ export default {
 .modal-card {
 	position: relative;
 	max-width: 80%;
-	z-index: 10;
+	z-index: 3;
 	top: 20%;
 	margin: auto;
 	width: 50%;
@@ -166,8 +178,6 @@ export default {
 
 img {
 	display: inline;
-	width: 100%;
-	height: 100%;
 	object-fit: contain;
 	max-height: 400px;
 }

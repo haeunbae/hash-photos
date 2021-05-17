@@ -1,22 +1,14 @@
 <template>
 	<div class="modal" v-if="showModal">
-		<div class="overlay" @click="close"></div>
 		<div class="modal-card">
 			<!-- modal header-->
 			<div class="modal-header">
-				<h3>upload your image</h3>
+				<h3>update your hashtags</h3>
 				<span @click="close"><font-awesome-icon icon="times" class="fas times fa-2x" /></span>
 			</div>
 			<!--modal content-->
 			<div class="card-wrapper">
-				<vue-dropzone
-					v-model="image"
-					ref="imgDropZone"
-					id="customdropzone"
-					:options="dropzoneOptions"
-					@vdropzone-file-added="vfileAdded"
-					@vdropzone-file-added-manually="vfileAdded"
-				></vue-dropzone>
+				<img :src="`http://localhost:3004/${image.img_path}`" @click="download(nowImg)" />
 
 				<p class="info">Type your hashtag(ex. #HashTag")</p>
 				<div class="wrapper">
@@ -24,54 +16,43 @@
 						type="text"
 						id="hashtags"
 						autocomplete="off"
-						v-model="hashtag"
+						v-model="image.img_tag"
 						v-on:keyup.enter="submit"
 					/>
 
-					<div class="tag-container"></div>
+					<!-- <div class="tag-container"></div> -->
 				</div>
-
-				<button class="save-btn" @click="save"><h3>save it!</h3></button>
+				<!-- <button class="save-btn" @click="save"><h3>save it!</h3></button> -->
+				<div class="btns-area">
+					<div class="btn-area" @click="saveUpdate">
+						<font-awesome-icon icon="edit" style="height: 100%">수정</font-awesome-icon>
+					</div>
+					<div class="btn-area">
+						<font-awesome-icon icon="trash-alt" style="height: 100%">삭제</font-awesome-icon>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import vue2Dropzone from 'vue2-dropzone';
-import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 export default {
-	components: {
-		vueDropzone: vue2Dropzone,
-	},
-	props: {
-		showModal: {
-			type: Boolean,
-			default: false,
-		},
-	},
+	components: {},
 	data() {
 		return {
-			dropzoneOptions: {
-				autoProcessQueue: false,
-				addRemoveLinks: true,
-				url: 'https://localhost:3004/images',
-				thumbnailWidth: 200,
-				thumbnailHeight: 200,
-				acceptedFiles: '.jpg, .jpeg, .png',
-				dictDefaultMessage: `<p class='text-default'><i class='fa fa-cloud-upload mr-2'></i> Drag Images or Click Here</p>
-          <p class="form-text">Allowed Files: .jpg, .jpeg, .png</p>
-          `,
-				maxFiles: 1,
-			},
 			images: [],
 			hashtag: '',
-			image: '',
+			image: {
+				img_path: '',
+				img_tag: '',
+			},
 			imgInfo: {
 				imgFile: null,
 				hashtag: '',
 			},
 			uploadUser: '',
+			showModal: false,
 		};
 	},
 	watch: {
@@ -81,10 +62,12 @@ export default {
 	},
 	created() {},
 	methods: {
-		open() {
+		open(img) {
 			this.showModal = true;
-			// console.log("create!");
-			// this.$refs.imgDropZone.disable();
+			this.image = img;
+			// this.hashtag =
+			console.log(img);
+			console.log(this.showModal);
 		},
 		close() {
 			this.showModal = false;
@@ -128,15 +111,11 @@ export default {
 		},
 		vfileAdded(file) {
 			console.log(file);
-			console.log(this.image);
 			this.imgInfo.imgFile = file;
 		},
-		// vfiledroped(e) {
-		//   console.log(e);
-		// },
-		// clickremove(file) {
-		//   console.log(file);
-		// },
+		saveUpdate() {
+			console.log(this.image);
+		},
 	},
 };
 </script>
@@ -151,24 +130,21 @@ export default {
 	position: fixed;
 	left: 0;
 	top: 0;
-	z-index: 3;
+	z-index: 4;
 }
 .overlay {
 	opacity: 0.5;
-	background-color: black;
 }
 .modal-card {
 	position: relative;
 	max-width: 80%;
-	z-index: 10;
+	z-index: 4;
 	top: 20%;
 	margin: auto;
 	width: 50%;
 	background-color: white;
 	min-height: 500px;
 	opacity: 1;
-	/* animation-name: animatetop;
-	animation-duration: 0.8s; */
 }
 .modal-header {
 	padding: 2px 16px;
@@ -189,37 +165,15 @@ h3 {
 	color: white;
 }
 
+img {
+	display: inline;
+	z-index: 4;
+}
+
 .card-wrapper {
 	display: flex;
 	flex-direction: column;
-}
-.dropzone {
-	min-height: 300px;
-	background: white;
-	/* padding: 20px 20px; */
-	flex-grow: 2;
-	height: 300px;
-}
-
-.dropzone .dz-preview {
-	position: relative;
-	display: inline-block;
-	vertical-align: top;
-	/* margin: 16px; */
-	min-height: 100px;
-}
-
-.vue-dropzone > .dz-preview .dz-details {
-	background-color: rgba(33, 150, 243, 0);
-}
-
-.dropzone .dz-preview.dz-image-preview {
-	width: 100%;
-	height: 100%;
-}
-
-.dropzone .dz-progress {
-	display: none;
+	z-index: 4;
 }
 
 .wrapper {
@@ -232,13 +186,8 @@ h3 {
 	align-items: center;
 	flex-flow: row wrap;
 	border: solid 0px white;
+	z-index: 4;
 }
-
-/* h3 {
-  margin: 10px 14px 10px 0;
-  font-weight: 300;
-  font-size: 36px;
-} */
 
 p {
 	margin: 10px 10px;
@@ -246,6 +195,7 @@ p {
 	font-size: 14px;
 	opacity: 0.8;
 	letter-spacing: 1px;
+	z-index: 4;
 }
 
 input {
@@ -258,11 +208,13 @@ input {
 	font-family: 'Work Sans', sans-serif;
 	font-size: 16px;
 	outline: none;
+	z-index: 4;
 }
 
 .tag-container {
 	display: flex;
 	flex-flow: row wrap;
+	z-index: 4;
 }
 
 .tag {
@@ -271,6 +223,7 @@ input {
 	color: white;
 	padding: 6px;
 	margin: 5px;
+	z-index: 4;
 }
 
 .tag::before {
@@ -292,14 +245,12 @@ input {
 	margin-top: 10px;
 }
 
-/* @keyframes animatetop {
-	from {
-		top: 0;
-		opacity: 0;
-	}
-	to {
-		top: 20%;
-		opacity: 1;
-	}
-} */
+.btns-area {
+	display: flex;
+}
+
+.btn-area {
+	width: 50%;
+	min-height: 50px;
+}
 </style>
